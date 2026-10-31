@@ -1,6 +1,7 @@
-import pandas as pd
 import uuid
 from datetime import datetime, timedelta
+
+import pandas as pd
 
 # Set a base time for our simulation (e.g., 6 months ago)
 base_time = datetime.now() - timedelta(days=180)
@@ -13,11 +14,11 @@ data = [
     {"patient_id": "P-001", "days_offset": 16, "text": "Upgraded prescription to Symbicort for better asthma control."},
     {"patient_id": "P-001", "days_offset": 40, "text": "Patient reports severe heart palpitations after using Symbicort."},
     {"patient_id": "P-001", "days_offset": 41, "text": "Patient is intolerant to Symbicort. Medication discontinued. Prescribed Flovent."},
-    
+
     # --- PATIENT 2: The Contact Info Change (Entity Drift) ---
     {"patient_id": "P-002", "days_offset": 5, "text": "Patient emergency contact listed as wife, Sarah (555-0100)."},
     {"patient_id": "P-002", "days_offset": 60, "text": "Patient updated emergency contact to brother, David (555-0299)."},
-    
+
     # --- PATIENT 3: The Allergy Discovery (Safety Drift) ---
     {"patient_id": "P-003", "days_offset": 2, "text": "Patient has no known drug allergies (NKDA)."},
     {"patient_id": "P-003", "days_offset": 10, "text": "Patient prescribed Amoxicillin for sinus infection."},

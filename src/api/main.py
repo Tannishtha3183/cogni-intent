@@ -1,24 +1,24 @@
+import os
+import sys
+import time
+import uuid
+
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
-import uvicorn
-import os
-import sys
-import uuid
-import time
 
 # Add root directory to path
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(root_dir)
 
-from src.storage.vector_client import MemoryStore
-from src.mlops.drift_detector import DriftDetector
-from src.mlops.healer import MemoryHealer
+from src.core.logger import get_logger
 from src.ingestion.encoder import TextEncoder
 from src.ingestion.pipeline import run_ingestion
-from src.core.logger import get_logger
+from src.mlops.drift_detector import DriftDetector
+from src.mlops.healer import MemoryHealer
+from src.storage.vector_client import MemoryStore
 
 logger = get_logger(__name__)
 
@@ -46,13 +46,13 @@ encoder = TextEncoder()
 # Pydantic request / response models
 class QueryRequest(BaseModel):
     query: str
-    patient_id: Optional[str] = None
+    patient_id: str | None = None
     top_k: int = 3
 
 class CustomInjectRequest(BaseModel):
     patient_id: str
     scenario_name: str
-    records: List[str]
+    records: list[str]
 
 @app.get("/api/health")
 def health_check():
@@ -81,7 +81,7 @@ def run_scan():
         results = detector.scan_and_cluster(active_memories)
         return results
     except Exception as e:
-        logger.error(f"Scan failed: {str(e)}")
+        logger.error(f"Scan failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/heal")
@@ -127,7 +127,7 @@ def heal_memories():
             "healed_details": healed_details
         }
     except Exception as e:
-        logger.error(f"Healing failed: {str(e)}")
+        logger.error(f"Healing failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/query")
@@ -167,7 +167,7 @@ def simulate_agent_query(req: QueryRequest):
             "retrieved_memories": retrieved_hits
         }
     except Exception as e:
-        logger.error(f"Query simulation failed: {str(e)}")
+        logger.error(f"Query simulation failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/custom-inject")
@@ -196,17 +196,17 @@ def inject_custom_scenario(req: CustomInjectRequest):
             "injected_ids": injected_ids
         }
     except Exception as e:
-        logger.error(f"Custom injection failed: {str(e)}")
+        logger.error(f"Custom injection failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/lineage")
-def get_lineage(patient_id: Optional[str] = None):
+def get_lineage(patient_id: str | None = None):
     """Returns the Directed Acyclic Graph (DAG) of memory evolution for visualization."""
     try:
         dag = db.get_lineage_dag(patient_id=patient_id)
         return dag
     except Exception as e:
-        logger.error(f"Lineage retrieval failed: {str(e)}")
+        logger.error(f"Lineage retrieval failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/scenarios")
@@ -263,7 +263,7 @@ def reset_database():
         run_ingestion()
         return {"status": "success", "message": "Vector database re-seeded with initial synthetic logs."}
     except Exception as e:
-        logger.error(f"Database reset failed: {str(e)}")
+        logger.error(f"Database reset failed: {e!s}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Mount assets directory explicitly

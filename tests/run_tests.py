@@ -1,18 +1,19 @@
-import sys
 import os
+import sys
 
 # Add root directory to path
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(root_dir)
 
-from src.storage.vector_client import MemoryStore
+from src.ingestion.encoder import TextEncoder
 from src.mlops.drift_detector import DriftDetector
 from src.mlops.healer import MemoryHealer
-from src.ingestion.encoder import TextEncoder
+from src.storage.vector_client import MemoryStore
+
 
 def run_suite():
     print("=== Cogni-Intent Test Suite ===")
-    
+
     # 1. TextEncoder test
     print("[Test 1] Testing TextEncoder...")
     encoder = TextEncoder()
@@ -22,7 +23,11 @@ def run_suite():
 
     # 2. VectorStore test
     print("[Test 2] Testing MemoryStore...")
-    db = MemoryStore(db_path="data/test_chroma_db")
+    test_db_path = "data/test_chroma_db"
+    if os.path.exists(test_db_path):
+        import shutil
+        shutil.rmtree(test_db_path, ignore_errors=True)
+    db = MemoryStore(db_path=test_db_path)
     doc_id = "test-doc-001"
     db.insert_memory(
         doc_id=doc_id,
@@ -32,11 +37,11 @@ def run_suite():
     )
     active = db.fetch_active_memories()
     assert doc_id in active['ids'], "Inserted doc should be in active memories"
-    
+
     db.soft_delete(doc_id)
     active_after = db.fetch_active_memories()
     assert doc_id not in active_after['ids'], "Soft-deleted doc should NOT be in active memories"
-    
+
     all_docs = db.fetch_all()
     assert doc_id in all_docs['ids'], "Soft-deleted doc MUST be in fetch_all (audit trail)"
     print(" -> PASS: MemoryStore soft-eviction and active filtering work as specified.")

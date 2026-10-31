@@ -1,6 +1,8 @@
+
 import pytest
-import os
+
 from src.storage.vector_client import MemoryStore
+
 
 @pytest.fixture
 def memory_store(tmp_path):

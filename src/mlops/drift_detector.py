@@ -1,9 +1,10 @@
-import sys
-import os
 import json
+import os
+import sys
 import time
+from typing import Any
+
 import numpy as np
-from typing import Dict, Any, List
 
 # Add root directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -30,7 +31,7 @@ class DriftDetector:
         self.threshold = self.config.get("drift_thresholds", {}).get("min_health_score", 0.75)
         self.umap_reducer = None
 
-    def scan_and_cluster(self, memories: Dict[str, Any]) -> Dict[str, Any]:
+    def scan_and_cluster(self, memories: dict[str, Any]) -> dict[str, Any]:
         """
         Executes the 4-stage MLOps Cognitive Drift Detection Pipeline:
         1. Vector Matrix Extraction
@@ -68,8 +69,8 @@ class DriftDetector:
         labels = self._cluster_hdbscan(reduced_embeddings)
 
         # 3. NLP Contradiction Scoring & Cluster Aggregation
-        polluted_clusters: Dict[str, List[Dict[str, Any]]] = {}
-        cluster_contradiction_scores: Dict[str, float] = {}
+        polluted_clusters: dict[str, list[dict[str, Any]]] = {}
+        cluster_contradiction_scores: dict[str, float] = {}
         overlapping_vectors = 0
 
         for i, label in enumerate(labels):
@@ -177,13 +178,13 @@ class DriftDetector:
                     cluster_id += 1
             return labels
 
-    def _compute_nlp_contradiction_score(self, cluster_memories: List[Dict[str, Any]]) -> (float, str):
+    def _compute_nlp_contradiction_score(self, cluster_memories: list[dict[str, Any]]) -> (float, str):
         """
         NLP Semantic Contradiction & NLI conflict heuristic.
         Checks for opposing polarity, prescription changes, allergy contradictions, and entity drift.
         """
         texts = [m['text'].lower() for m in cluster_memories]
-        
+
         # Clinical prescription conflict
         has_albuterol = any("albuterol" in t for t in texts)
         has_symbicort = any("symbicort" in t for t in texts)

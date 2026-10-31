@@ -1,16 +1,16 @@
-import sys
-import os
-import uuid
 import hashlib
+import os
+import sys
 import time
-from typing import List, Dict, Any
+import uuid
+from typing import Any
 
 # Add root directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from src.storage.vector_client import MemoryStore
-from src.ingestion.encoder import TextEncoder
 from src.core.logger import get_logger
+from src.ingestion.encoder import TextEncoder
+from src.storage.vector_client import MemoryStore
 
 logger = get_logger(__name__)
 
@@ -38,7 +38,7 @@ class MemoryHealer:
         else:
             logger.info("Operating in deterministic local NLP healer mode.")
 
-    def _llm_consolidate(self, memories: List[Dict[str, Any]]) -> Dict[str, str]:
+    def _llm_consolidate(self, memories: list[dict[str, Any]]) -> dict[str, str]:
         """Orchestrates LLM or deterministic NLP synthesis to produce the Golden Fact."""
         if not self.use_llm:
             return self._deterministic_consolidate(memories)
@@ -62,7 +62,7 @@ CLINICAL_DELTA: <1-sentence explanation of what was superseded and why>
                 contents=prompt,
             )
             text = response.text.strip()
-            
+
             golden = ""
             delta = "Consolidated chronological records via Gemini LLM surgery."
             for line in text.split("\n"):
@@ -79,7 +79,7 @@ CLINICAL_DELTA: <1-sentence explanation of what was superseded and why>
             logger.error(f"Gemini API consolidation error ({e}). Using deterministic consolidation.")
             return self._deterministic_consolidate(memories)
 
-    def _deterministic_consolidate(self, memories: List[Dict[str, Any]]) -> Dict[str, str]:
+    def _deterministic_consolidate(self, memories: list[dict[str, Any]]) -> dict[str, str]:
         """
         High-precision deterministic clinical NLP consolidation fallback.
         Provides zero-failure execution for local runs and evaluation.
@@ -108,7 +108,7 @@ CLINICAL_DELTA: <1-sentence explanation of what was superseded and why>
                 "clinical_delta": f"Resolved semantic collisions across {len(memories)} historical timeline entries."
             }
 
-    def heal_cluster(self, cluster_memories: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def heal_cluster(self, cluster_memories: list[dict[str, Any]]) -> dict[str, Any]:
         """
         Executes the full Diachronic Self-Healing Protocol:
         1. Synthesizes Golden Fact via NLP / LLM

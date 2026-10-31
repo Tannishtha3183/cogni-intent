@@ -1,6 +1,7 @@
 import logging
 import sys
 
+
 def get_logger(name: str) -> logging.Logger:
     """
     Returns a configured logger with UTF-8 support on Windows.

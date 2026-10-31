@@ -1,6 +1,8 @@
-import chromadb
 import os
-from typing import Dict, Any, List, Optional
+from typing import Any
+
+import chromadb
+
 from src.core.logger import get_logger
 
 logger = get_logger(__name__)
@@ -21,23 +23,23 @@ class MemoryStore:
         )
         logger.info(f"Connected to ChromaDB at '{db_path}' (Collection: patient_memories)")
 
-    def insert_memory(self, doc_id: str, vector: List[float], text: str, metadata: Dict[str, Any]):
-        """Appends a new vector document with MLOps diachronic metadata."""
-        self.collection.add(
+    def insert_memory(self, doc_id: str, vector: list[float], text: str, metadata: dict[str, Any]):
+        """Appends or updates a vector document with MLOps diachronic metadata."""
+        self.collection.upsert(
             ids=[doc_id],
             embeddings=[vector],
             documents=[text],
             metadatas=[metadata]
         )
 
-    def fetch_active_memories(self) -> Dict[str, Any]:
+    def fetch_active_memories(self) -> dict[str, Any]:
         """Retrieves only active, un-archived memories currently in the agent's context pool."""
         return self.collection.get(
             where={"is_archived": False},
             include=['embeddings', 'documents', 'metadatas']
         )
 
-    def fetch_all(self) -> Dict[str, Any]:
+    def fetch_all(self) -> dict[str, Any]:
         """Retrieves all memories including historical soft-evicted records for MLOps audits."""
         return self.collection.get(
             include=['embeddings', 'documents', 'metadatas']
@@ -55,7 +57,7 @@ class MemoryStore:
             self.collection.update(ids=[doc_id], metadatas=[meta])
             logger.info(f"Memory {doc_id} soft-evicted (is_archived=True).")
 
-    def query_active(self, query_vector: List[float], n_results: int = 3, patient_id: Optional[str] = None) -> List[Dict[str, Any]]:
+    def query_active(self, query_vector: list[float], n_results: int = 3, patient_id: str | None = None) -> list[dict[str, Any]]:
         """
         Simulates an AI agent's semantic search retrieval against the active memory pool.
         Demonstrates the contrast before and after healing.
@@ -86,7 +88,7 @@ class MemoryStore:
             logger.error(f"Error querying active memories: {e}")
             return []
 
-    def get_lineage_dag(self, patient_id: Optional[str] = None) -> Dict[str, Any]:
+    def get_lineage_dag(self, patient_id: str | None = None) -> dict[str, Any]:
         """
         Extracts the Directed Acyclic Graph (DAG) of memory evolution.
         Maps parent obsolete memories to superseding Golden Vectors.
