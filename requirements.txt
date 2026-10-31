@@ -1,0 +1,9 @@
+torch
+sentence-transformers
+chromadb
+umap-learn
+scikit-learn>=1.3.0
+mlflow
+pandas
+numpy
+pydantic

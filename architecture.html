@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cogni-Intent | Architecture: Model Layer & Drift-Aware Schema</title>
+    
+    <!-- Fonts: Literata & Nunito Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..900;1,7..72,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Tailwind CSS with Terra Configuration -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4a7c59",
+                        "primary-hover": "#3b6447",
+                        "primary-container": "#78a886",
+                        "primary-light": "#eef6f0",
+                        surface: "#faf6f0",
+                        "surface-container": "#f0ece4",
+                        "surface-container-low": "#f5f1ea",
+                        "surface-container-high": "#eae6de",
+                        "surface-container-highest": "#e4e0d8",
+                        tertiary: "#705c30",
+                        "tertiary-container": "#c4a66a",
+                        "on-surface": "#2e3230",
+                        "on-surface-variant": "#4a4e4a",
+                        "outline-variant": "#c4c8bc",
+                        alert: "#b83230"
+                    },
+                    fontFamily: {
+                        headline: ["Literata", "Georgia", "serif"],
+                        body: ["Nunito Sans", "system-ui", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    boxShadow: {
+                        soft: "0 4px 20px rgba(46, 50, 48, 0.06)",
+                        elevated: "0 10px 30px rgba(46, 50, 48, 0.09)"
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- MathJax 3 -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            background-color: #faf6f0;
+            color: #2e3230;
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Literata', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-header {
+            background: rgba(250, 246, 240, 0.94);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 glass-header border-b border-outline-variant/30 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-2xl icon-fill">psychology</span>
+                </div>
+                <div>
+                    <div class="font-headline font-bold text-xl text-on-surface tracking-tight">Cogni-Intent</div>
+                    <div class="text-[11px] font-semibold text-primary uppercase tracking-wider">Memory Immune Engine</div>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <a href="./index.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">home</span>
+                    <span>Overview</span>
+                </a>
+                <a href="./simulation.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                    <span>Simulation Lab</span>
+                </a>
+                <a href="./manual.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">help_center</span>
+                    <span>User Guide</span>
+                </a>
+                <a href="./architecture.html" class="px-3 py-2 rounded-lg text-sm font-semibold bg-surface-container text-primary flex items-center gap-1.5 shadow-xs">
+                    <span class="material-symbols-outlined text-lg">layers</span>
+                    <span>Architecture</span>
+                </a>
+                <a href="./workflow.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">schema</span>
+                    <span>Workflow</span>
+                </a>
+                <a href="./recovery.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">healing</span>
+                    <span>Recovery Logic</span>
+                </a>
+                <a href="./lifecycle.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">timeline</span>
+                    <span>System Aim</span>
+                </a>
+                <a href="./limitations.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">warning</span>
+                    <span>Limitations</span>
+                </a>
+            </nav>
+
+            <!-- Actions & CTA -->
+            <div class="flex items-center gap-3">
+                <a href="./simulation.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-soft transition-all hover:shadow-elevated hover:-translate-y-0.5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>
+                    <span>Live Simulation</span>
+                    <span class="material-symbols-outlined text-base">rocket_launch</span>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-on-surface hover:bg-surface-container transition" aria-label="Toggle Navigation">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileNav" class="hidden md:hidden border-t border-outline-variant/30 bg-surface px-4 pt-3 pb-6 space-y-1 shadow-elevated">
+            <a href="./index.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Overview</a>
+            <a href="./simulation.html" class="block px-3 py-2.5 rounded-lg text-sm font-bold text-primary hover:bg-primary-light">Launch Live Simulation &rarr;</a>
+            <a href="./manual.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">User Guide &amp; Manual</a>
+            <a href="./architecture.html" class="block px-3 py-2.5 rounded-lg text-sm font-semibold bg-surface-container text-primary">Architecture & Model</a>
+            <a href="./workflow.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Workflow Architecture</a>
+            <a href="./recovery.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Recovery & Healing Logic</a>
+            <a href="./lifecycle.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">System Aim & Lifecycle</a>
+            <a href="./limitations.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">System Limitations</a>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="flex-1 py-12 lg:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <!-- Page Header -->
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light border border-primary/20 text-xs font-bold text-primary tracking-wide uppercase mb-3">
+                    <span class="material-symbols-outlined text-sm">developer_board</span>
+                    <span>NLP &amp; MLOps System Specification</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-on-surface tracking-tight">
+                    Architecture: Model Layer &amp; Drift-Aware Schema
+                </h1>
+                <p class="text-lg text-on-surface-variant max-w-3xl mt-3 leading-relaxed">
+                    A clear technical breakdown of how Cogni-Intent turns clinical text into numbers (embeddings), stores records in ChromaDB, and uses smart history tracking to fix conflicting facts automatically.
+                </p>
+            </div>
+
+            <!-- INTERACTIVE 4-LAYER SYSTEM EXPLORER TABS -->
+            <div class="bg-surface-container rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-soft space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline-variant/30">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-tertiary">Interactive Component Deep-Dive</div>
+                        <h3 class="text-xl font-headline font-bold text-on-surface">The 4-Layer Autonomous Immune Architecture</h3>
+                    </div>
+                    <span class="text-xs text-on-surface-variant">Click any layer to inspect technical parameters</span>
+                </div>
+
+                <!-- Layer Selector Tabs -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <button id="layerBtn1" onclick="selectLayer(1)" class="p-3.5 rounded-xl text-left font-bold text-xs bg-primary text-white shadow-xs transition flex flex-col justify-between">
+                        <span class="text-[10px] uppercase opacity-80">Layer 1</span>
+                        <span class="text-sm mt-1">NLP Text Embedding</span>
+                    </button>
+                    <button id="layerBtn2" onclick="selectLayer(2)" class="p-3.5 rounded-xl text-left font-semibold text-xs bg-surface text-on-surface hover:bg-surface-container-high transition flex flex-col justify-between">
+                        <span class="text-[10px] uppercase text-on-surface-variant">Layer 2</span>
+                        <span class="text-sm mt-1">Memory Store (ChromaDB)</span>
+                    </button>
+                    <button id="layerBtn3" onclick="selectLayer(3)" class="p-3.5 rounded-xl text-left font-semibold text-xs bg-surface text-on-surface hover:bg-surface-container-high transition flex flex-col justify-between">
+                        <span class="text-[10px] uppercase text-on-surface-variant">Layer 3</span>
+                        <span class="text-sm mt-1">Conflict Scanner</span>
+                    </button>
+                    <button id="layerBtn4" onclick="selectLayer(4)" class="p-3.5 rounded-xl text-left font-semibold text-xs bg-surface text-on-surface hover:bg-surface-container-high transition flex flex-col justify-between">
+                        <span class="text-[10px] uppercase text-on-surface-variant">Layer 4</span>
+                        <span class="text-sm mt-1">AI Healing &amp; History Tree</span>
+                    </button>
+                </div>
+
+                <!-- Layer Detailed Display Card -->
+                <div id="layerDetailCard" class="bg-surface rounded-2xl p-6 border border-outline-variant/30 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <!-- Dynamic Layer Details Loaded by JS -->
+                </div>
+            </div>
+
+            <!-- Asymmetric Grid: Processing vs Storage -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left Card: Processing Layer (7 cols) -->
+                <div class="lg:col-span-7 bg-surface-container rounded-3xl p-8 border border-outline-variant/30 shadow-soft relative overflow-hidden flex flex-col justify-between">
+                    <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-9xl text-primary/5 select-none pointer-events-none">memory</span>
+                    
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="p-2.5 rounded-xl bg-primary text-white">
+                                <span class="material-symbols-outlined">developer_board</span>
+                            </span>
+                            <h2 class="text-2xl font-headline font-bold text-on-surface">The NLP Processing &amp; Vector Layer</h2>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                            Cogni-Intent converts raw clinical observations into mathematically rigorous representations. This layer focuses on high contextual fidelity, computational efficiency, and sub-millisecond retrieval speeds.
+                        </p>
+
+                        <!-- Inner 2-column specifications -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Spec 1 -->
+                            <div class="bg-surface rounded-2xl p-5 border border-outline-variant/30">
+                                <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Vector Dimensions</div>
+                                <h3 class="text-lg font-headline font-bold text-on-surface mb-2">384-D Dense Vectors</h3>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">
+                                    Uses optimized Sentence-Transformers (<code class="bg-surface-container px-1 rounded text-xs font-mono">all-MiniLM-L6-v2</code>) to decrease memory overhead by 75% compared to 1536-D models while preserving clinical semantics.
+                                </p>
+                            </div>
+
+                            <!-- Spec 2 -->
+                            <div class="bg-surface rounded-2xl p-5 border border-outline-variant/30 flex flex-col justify-between">
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Sequence Aggregation</div>
+                                    <h3 class="text-lg font-headline font-bold text-on-surface mb-2">Mean Pooling</h3>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed">
+                                        Token representations over attention masks are mathematically aggregated:
+                                    </p>
+                                </div>
+                                <div class="mt-3 bg-surface-container-high rounded-xl p-2.5 text-center text-xs font-mono text-on-surface overflow-x-auto">
+                                    $$v = \frac{\sum (h_i \cdot m_i)}{\sum m_i}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+                        <span>Embedding Runtime: CPU / TensorRT compatible</span>
+                        <span class="text-primary font-bold">Cosine Space ($[-1, 1]$)</span>
+                    </div>
+                </div>
+
+                <!-- Right Card: Abstraction Storage (5 cols) -->
+                <div class="lg:col-span-5 bg-surface-container-high rounded-3xl p-8 border border-outline-variant/30 shadow-soft flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="p-2.5 rounded-xl bg-tertiary text-white">
+                                <span class="material-symbols-outlined">database</span>
+                            </span>
+                            <h2 class="text-2xl font-headline font-bold text-on-surface">Abstraction Storage</h2>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                            Embeddings are managed through a decoupled client interface (ChromaDB), enabling zero-downtime database swapping (e.g. Qdrant, Milvus, or pgvector) for enterprise deployments.
+                        </p>
+
+                        <div class="bg-surface rounded-2xl p-5 border border-outline-variant/30 space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary text-xl mt-0.5">travel_explore</span>
+                                <div>
+                                    <div class="text-sm font-bold text-on-surface">Geometric Semantic Retrieval</div>
+                                    <div class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                                        Searches execute using Cosine Distance metric:
+                                        <div class="text-center font-mono text-xs py-1.5 text-primary">
+                                            $$\text{Sim}(u, v) = \frac{u \cdot v}{\|u\| \|v\|}$$
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-surface-container rounded-2xl p-4 border border-outline-variant/30">
+                        <div class="text-xs font-semibold text-tertiary uppercase tracking-wider">Storage Architecture Principle</div>
+                        <p class="text-xs text-on-surface mt-1 leading-relaxed">
+                            "Never treat AI memory as disposable scratch paper. In healthcare and high-stakes systems, every memory update must preserve a complete history chain so doctors can always verify past treatments."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Interactive Schema Table Section -->
+            <div class="bg-surface rounded-3xl p-8 sm:p-10 border border-outline-variant/30 shadow-soft">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-6 border-b border-outline-variant/30 gap-4">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-primary">Metadata Protocol Specification</div>
+                        <h3 class="text-2xl font-headline font-bold text-on-surface mt-1">The "Drift-Aware" Schema</h3>
+                    </div>
+                    <span class="px-3.5 py-1.5 rounded-full bg-surface-container text-xs font-semibold text-on-surface border border-outline-variant/40">
+                        Mandatory for all ingested patient vectors
+                    </span>
+                </div>
+
+                <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">
+                    To prevent hallucinations and support automated consolidation, every stored vector must carry strict contextual provenance. This schema enables temporal decay calculations, soft eviction, and lineage graph traversal.
+                </p>
+
+                <!-- Responsive Table Container -->
+                <div class="overflow-x-auto rounded-2xl border border-outline-variant/30">
+                    <table class="w-full text-left border-collapse bg-surface">
+                        <thead>
+                            <tr class="bg-surface-container border-b border-outline-variant/30">
+                                <th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-on-surface w-1/4">Field Key</th>
+                                <th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-on-surface w-1/6">Data Type</th>
+                                <th class="py-4 px-6 text-xs font-bold uppercase tracking-wider text-on-surface w-7/12">Clinical Purpose &amp; Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/20 text-sm">
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">relevance_score</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">Float (0.0 &ndash; 1.0)</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Tracks priority weight; decayed dynamically over time via exponential half-life functions to penalize stale clinical assumptions.
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">timestamp</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">Float (Unix epoch)</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Enables chronological ordering of medical events, vital for detecting evolving symptoms, dosage adjustments, and new contraindications.
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">is_consolidated</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">Boolean</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Identifies whether a vector is raw uncurated input or an authoritative <strong class="text-on-surface font-semibold">"Golden Fact"</strong> synthesized by the LLM healer.
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">supersedes_ids</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">String (UUIDs)</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Comma-separated foreign keys pointing backwards to the obsolete memories that were consolidated, preserving complete audit trails.
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">is_archived</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">Boolean</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Enforces Soft-Eviction. Active agent queries filter by <code class="bg-surface-container px-1 py-0.5 rounded text-xs">where: {"is_archived": false}</code>, keeping retrieval hot pool free of superseded data.
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-6 font-mono font-bold text-primary">patient_id</td>
+                                <td class="py-4 px-6 text-on-surface-variant font-mono text-xs">String</td>
+                                <td class="py-4 px-6 text-on-surface-variant leading-relaxed">
+                                    Patient entity isolation key ensuring cross-patient memory pollution cannot occur during multi-tenant retrieval or clustering.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Architectural Blueprint Images (Click-to-zoom) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Diagram 1 -->
+                <div class="bg-surface rounded-3xl p-6 border border-outline-variant/30 shadow-soft hover:shadow-elevated transition cursor-pointer group" onclick="openLightbox('assets/images/diagram-1-model-structure.png', 'Fig 1: Processing Layer & 384-D Mean Pooling')">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-headline font-bold text-on-surface text-base">Figure 1: Processing Layer &amp; Model Architecture</h4>
+                        <span class="text-xs text-primary font-bold flex items-center gap-1 group-hover:underline">
+                            <span class="material-symbols-outlined text-sm">zoom_in</span> Zoom
+                        </span>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden border border-outline-variant/20 bg-surface-container">
+                        <img src="assets/images/diagram-1-model-structure.png" alt="Figure 1: Model Structure" class="w-full h-64 object-contain group-hover:scale-102 transition-transform duration-300">
+                    </div>
+                    <p class="text-xs text-on-surface-variant mt-3 text-center">Processing flow from tokenization to mean-pooled sentence vectors.</p>
+                </div>
+
+                <!-- Diagram 2 -->
+                <div class="bg-surface rounded-3xl p-6 border border-outline-variant/30 shadow-soft hover:shadow-elevated transition cursor-pointer group" onclick="openLightbox('assets/images/diagram-2-storage-schema.png', 'Fig 2: Abstraction Storage & Drift-Aware Schema')">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-headline font-bold text-on-surface text-base">Figure 2: Storage Architecture &amp; Lineage Schema</h4>
+                        <span class="text-xs text-primary font-bold flex items-center gap-1 group-hover:underline">
+                            <span class="material-symbols-outlined text-sm">zoom_in</span> Zoom
+                        </span>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden border border-outline-variant/20 bg-surface-container">
+                        <img src="assets/images/diagram-2-storage-schema.png" alt="Figure 2: Storage Schema" class="w-full h-64 object-contain group-hover:scale-102 transition-transform duration-300">
+                    </div>
+                    <p class="text-xs text-on-surface-variant mt-3 text-center">Diachronic storage layer linking active and soft-evicted memory nodes.</p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <a href="./index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-on-surface hover:text-primary transition">
+                    <span class="material-symbols-outlined text-base">arrow_back</span>
+                    <span>Back to Overview</span>
+                </a>
+                <div class="flex items-center gap-4">
+                    <a href="./workflow.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-soft transition">
+                        <span>Next: Workflow Architecture</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-surface-container border-t border-outline-variant/30 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg icon-fill">psychology</span>
+                </div>
+                <span class="font-headline font-bold text-lg text-on-surface">Cogni-Intent</span>
+                <span class="text-xs text-on-surface-variant">v2.0.0 &bull; Built with Terra Organic Design</span>
+            </div>
+            <div class="flex flex-wrap gap-6 text-sm font-medium text-on-surface-variant">
+                <a href="./index.html" class="hover:text-primary transition">Overview</a>
+                <a href="./simulation.html" class="hover:text-primary transition">Live Simulation</a>
+                <a href="./manual.html" class="hover:text-primary transition">User Guide</a>
+                <a href="./architecture.html" class="text-primary font-semibold">Architecture</a>
+                <a href="./workflow.html" class="hover:text-primary transition">Workflow</a>
+                <a href="./recovery.html" class="hover:text-primary transition">Recovery</a>
+                <a href="./lifecycle.html" class="hover:text-primary transition">System Aim</a>
+                <a href="./limitations.html" class="hover:text-primary transition">Limitations</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeLightbox(event)">
+        <div class="relative max-w-6xl w-full max-h-[90vh] bg-surface rounded-2xl overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface-container">
+                <h4 id="lightboxTitle" class="font-headline font-bold text-on-surface text-base">Architectural Diagram</h4>
+                <button onclick="closeLightbox()" class="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            <div class="p-4 overflow-auto flex items-center justify-center bg-black/5 min-h-[50vh]">
+                <img id="lightboxImage" src="" alt="Enlarged Diagram" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-sm">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const LAYER_DATA = {
+            1: {
+                title: "Layer 1: NLP Text Embedding & Mean Pooling (384-D)",
+                badge: "Sentence-BERT Embedding Base",
+                badgeColor: "bg-primary-light text-primary",
+                description: "Doctor notes are converted into numbers using a fast 6-layer transformer. This converts words into 384-dimensional points while capturing clinical meaning accurately.",
+                specs: [
+                    { label: "Model Backbone", val: "all-MiniLM-L6-v2" },
+                    { label: "Vector Dimension", val: "384-D Dense Float32" },
+                    { label: "Memory Efficiency", val: "75% smaller than 1536-D OpenAI ada-002" },
+                    { label: "Distance Space", val: "Cosine Similarity Metric [-1.0, 1.0]" }
+                ]
+            },
+            2: {
+                title: "Layer 2: ChromaDB Memory Store & Safe Archiving",
+                badge: "HNSW Persistent Index",
+                badgeColor: "bg-surface-container-high text-tertiary",
+                description: "Persistent database organized by patient ID. Enforces safe archiving: outdated notes are never deleted, ensuring compliance with medical audit and legal guidelines.",
+                specs: [
+                    { label: "Storage Engine", val: "ChromaDB Persistent Client" },
+                    { label: "Index Algorithm", val: "Hierarchical Navigable Small World (HNSW)" },
+                    { label: "Archiving Policy", val: "Safe Archiving (is_archived: true, no deletion)" },
+                    { label: "Query Isolation", val: "where: {is_archived: false, patient_id: PID}" }
+                ]
+            },
+            3: {
+                title: "Layer 3: UMAP + HDBSCAN + Cross-Encoder NLI Conflict Scanner",
+                badge: "Automated MLOps Background Daemon",
+                badgeColor: "bg-yellow-100 text-yellow-800",
+                description: "A background process checks memory every 60 seconds. UMAP maps memories into 2D; HDBSCAN groups related notes; Cross-Encoder NLI checks whether any notes contradict each other.",
+                specs: [
+                    { label: "2D Map Reduction", val: "UMAP (n_components=2, metric='cosine')" },
+                    { label: "Density Clustering", val: "HDBSCAN (min_cluster_size=2, metric='euclidean')" },
+                    { label: "Contradiction Check", val: "Pairwise NLI Conflict Verification" },
+                    { label: "Threshold Trigger", val: "Memory Health Score (MHS) < 0.75" }
+                ]
+            },
+            4: {
+                title: "Layer 4: AI Memory Merging & Complete History Tree",
+                badge: "Automated Self-Healing",
+                badgeColor: "bg-primary-light text-primary",
+                description: "When clashing notes push the health score below 0.75, the AI healer resolves timeline conflicts, writes one clear Golden Fact, and links all past notes into an audit history chain.",
+                specs: [
+                    { label: "Consolidation Model", val: "Gemini 2.5 Flash / Local Deterministic NLP" },
+                    { label: "History Link Format", val: "supersedes_ids pointing to parent notes" },
+                    { label: "Audit Trail", val: "Secure Audit Trail (SHA-256 Provenance Hash)" },
+                    { label: "Post-Surgery MHS", val: "Restored to 1.00 (Optimal)" }
+                ]
+            }
+        };
+
+        function selectLayer(layerNum) {
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`layerBtn${i}`);
+                if (i === layerNum) {
+                    btn.className = "p-3.5 rounded-xl text-left font-bold text-xs bg-primary text-white shadow-xs transition flex flex-col justify-between";
+                } else {
+                    btn.className = "p-3.5 rounded-xl text-left font-semibold text-xs bg-surface text-on-surface hover:bg-surface-container-high transition flex flex-col justify-between";
+                }
+            }
+
+            const data = LAYER_DATA[layerNum];
+            const card = document.getElementById('layerDetailCard');
+            card.innerHTML = `
+                <div class="md:col-span-7 space-y-3">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${data.badgeColor}">${data.badge}</span>
+                    <h4 class="text-xl font-headline font-bold text-on-surface">${data.title}</h4>
+                    <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">${data.description}</p>
+                </div>
+                <div class="md:col-span-5 bg-surface-container rounded-xl p-4 border border-outline-variant/30 space-y-2 text-xs">
+                    <div class="font-bold text-[11px] uppercase tracking-wider text-tertiary">Technical Parameters</div>
+                    ${data.specs.map(s => `
+                        <div class="flex items-start justify-between gap-2 py-1 border-b border-outline-variant/20 last:border-b-0">
+                            <span class="text-on-surface-variant font-medium">${s.label}:</span>
+                            <span class="font-mono text-on-surface font-semibold text-right">${s.val}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            selectLayer(1);
+        });
+
+        function openLightbox(src, title) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightboxTitle').innerText = title || 'Architectural Diagram';
+            document.getElementById('lightboxModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        mobileBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

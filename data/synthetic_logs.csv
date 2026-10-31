@@ -1,0 +1,11 @@
+id,patient_id,timestamp,date_readable,text
+497c0104-e653-4891-a017-d609604aa7bb,P-001,1770715675.123752,2026-02-10,Patient reports mild asthma symptoms. Prescribed Albuterol inhaler.
+69e94f35-1237-453c-a2fc-dafa2f9af124,P-001,1771925275.123752,2026-02-24,Patient states Albuterol is ineffective. Asthma symptoms persisting.
+cc11466f-e885-4241-a5bb-82e8dad80785,P-001,1772011675.123752,2026-02-25,Upgraded prescription to Symbicort for better asthma control.
+8261cc6d-8333-4cb4-9d68-f0029eac22c5,P-001,1774085275.123752,2026-03-21,Patient reports severe heart palpitations after using Symbicort.
+2928f3a4-76db-4ae1-b393-6f55d17b7ecd,P-001,1774171675.123752,2026-03-22,Patient is intolerant to Symbicort. Medication discontinued. Prescribed Flovent.
+12bda253-e5b0-47c2-beb6-6e21f7818712,P-002,1771061275.123752,2026-02-14,"Patient emergency contact listed as wife, Sarah (555-0100)."
+bce1b961-949e-4d62-b6f8-8e9f1786586c,P-002,1775813275.123752,2026-04-10,"Patient updated emergency contact to brother, David (555-0299)."
+657dd7a7-9fea-408b-9dfe-837ee09dcb43,P-003,1770802075.123752,2026-02-11,Patient has no known drug allergies (NKDA).
+d7dd8ac1-3562-4830-b9ad-6e5d6252df46,P-003,1771493275.123752,2026-02-19,Patient prescribed Amoxicillin for sinus infection.
+22bd39ad-82b8-429d-8995-f3c3ff8bca5f,P-003,1771666075.123752,2026-02-21,Patient developed severe hives from Amoxicillin. Added Penicillin allergy to file.

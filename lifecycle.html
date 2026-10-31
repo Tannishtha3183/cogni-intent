@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cogni-Intent | System Aim & Long-Term Agent Memory Lifecycle</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..900;1,7..72,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Tailwind CSS with Terra Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4a7c59",
+                        "primary-hover": "#3b6447",
+                        "primary-container": "#78a886",
+                        "primary-light": "#eef6f0",
+                        surface: "#faf6f0",
+                        "surface-container": "#f0ece4",
+                        "surface-container-low": "#f5f1ea",
+                        "surface-container-high": "#eae6de",
+                        tertiary: "#705c30",
+                        "tertiary-container": "#c4a66a",
+                        "on-surface": "#2e3230",
+                        "on-surface-variant": "#4a4e4a",
+                        "outline-variant": "#c4c8bc",
+                        alert: "#b83230"
+                    },
+                    fontFamily: {
+                        headline: ["Literata", "Georgia", "serif"],
+                        body: ["Nunito Sans", "system-ui", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    boxShadow: {
+                        soft: "0 4px 20px rgba(46, 50, 48, 0.06)",
+                        elevated: "0 10px 30px rgba(46, 50, 48, 0.09)"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- MathJax 3 -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            background-color: #faf6f0;
+            color: #2e3230;
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Literata', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-header {
+            background: rgba(250, 246, 240, 0.94);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 glass-header border-b border-outline-variant/30 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-2xl icon-fill">psychology</span>
+                </div>
+                <div>
+                    <div class="font-headline font-bold text-xl text-on-surface tracking-tight">Cogni-Intent</div>
+                    <div class="text-[11px] font-semibold text-primary uppercase tracking-wider">Memory Immune Engine</div>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <a href="./index.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">home</span>
+                    <span>Overview</span>
+                </a>
+                <a href="./simulation.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                    <span>Simulation Lab</span>
+                </a>
+                <a href="./manual.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">help_center</span>
+                    <span>User Guide</span>
+                </a>
+                <a href="./architecture.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">layers</span>
+                    <span>Architecture</span>
+                </a>
+                <a href="./workflow.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">schema</span>
+                    <span>Workflow</span>
+                </a>
+                <a href="./recovery.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">healing</span>
+                    <span>Recovery Logic</span>
+                </a>
+                <a href="./lifecycle.html" class="px-3 py-2 rounded-lg text-sm font-semibold bg-surface-container text-primary flex items-center gap-1.5 shadow-xs">
+                    <span class="material-symbols-outlined text-lg">timeline</span>
+                    <span>System Aim</span>
+                </a>
+                <a href="./limitations.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">warning</span>
+                    <span>Limitations</span>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="./simulation.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-soft transition-all hover:shadow-elevated hover:-translate-y-0.5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>
+                    <span>Live Simulation</span>
+                    <span class="material-symbols-outlined text-base">rocket_launch</span>
+                </a>
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-on-surface hover:bg-surface-container transition" aria-label="Toggle Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileNav" class="hidden md:hidden border-t border-outline-variant/30 bg-surface px-4 pt-3 pb-6 space-y-1 shadow-elevated">
+            <a href="./index.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Overview</a>
+            <a href="./simulation.html" class="block px-3 py-2.5 rounded-lg text-sm font-bold text-primary hover:bg-primary-light">Launch Live Simulation &rarr;</a>
+            <a href="./manual.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">User Guide &amp; Manual</a>
+            <a href="./architecture.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Architecture & Model</a>
+            <a href="./workflow.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Workflow Architecture</a>
+            <a href="./recovery.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Recovery & Healing Logic</a>
+            <a href="./lifecycle.html" class="block px-3 py-2.5 rounded-lg text-sm font-semibold bg-surface-container text-primary">System Aim & Lifecycle</a>
+            <a href="./limitations.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">System Limitations</a>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="flex-1 py-12 lg:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <!-- Page Header -->
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light border border-primary/20 text-xs font-bold text-primary tracking-wide uppercase mb-3">
+                    <span class="material-symbols-outlined text-sm">timeline</span>
+                    <span>Component 02 &bull; Long-Term Memory Lifecycle</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-on-surface tracking-tight">
+                    Memory Timeline &amp; System Goal
+                </h1>
+                <p class="text-lg text-on-surface-variant max-w-3xl mt-3 leading-relaxed">
+                    How AI assistants store knowledge over time, why outdated notes cause confusion after a few months, and how Cogni-Intent keeps answers accurate without ever deleting past history.
+                </p>
+            </div>
+
+            <!-- INTERACTIVE AGENT LIFECYCLE TIMELINE SLIDER -->
+            <div class="bg-surface-container rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-soft space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline-variant/30">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-tertiary">Interactive Evolution Simulator</div>
+                        <h3 class="text-xl font-headline font-bold text-on-surface">Agent Memory Drift Over Time</h3>
+                    </div>
+                    <span class="text-xs text-on-surface-variant">Drag the timeline slider to observe drift progression</span>
+                </div>
+
+                <!-- Timeline Slider Control -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold text-on-surface">
+                        <span>Day 1 (Baseline)</span>
+                        <span id="sliderDayLabel" class="text-primary text-sm font-mono font-bold">Day 45 (Drift Collision Zone)</span>
+                        <span>Day 180 (Long-Term Stability)</span>
+                    </div>
+                    <input id="timelineSlider" type="range" min="1" max="180" value="45" oninput="updateTimelineStage(this.value)" class="w-full accent-primary cursor-pointer h-2 bg-surface rounded-lg" />
+                </div>
+
+                <!-- Timeline Stage Output Box -->
+                <div id="timelineStageCard" class="bg-surface rounded-2xl p-6 border border-outline-variant/30 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <!-- Updated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Two-Column Architecture: Aim & 4-Stage Lifecycle -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left: CDSS Clinical Aim & System Mission (5 cols) -->
+                <div class="lg:col-span-5 bg-surface-container rounded-3xl p-8 border border-outline-variant/30 shadow-soft space-y-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="p-2.5 rounded-xl bg-primary text-white">
+                                <span class="material-symbols-outlined">target</span>
+                            </span>
+                            <h2 class="text-2xl font-headline font-bold text-on-surface">Clinical System Aim</h2>
+                        </div>
+                        <p class="text-sm text-on-surface-variant leading-relaxed">
+                            Medical AI assistants cannot afford to forget or guess. When an AI operates in a hospital or clinic over several years, it collects hundreds of notes, prescription changes, and test results.
+                        </p>
+                    </div>
+
+                    <div class="bg-surface rounded-2xl p-5 border border-outline-variant/30 space-y-3 text-xs">
+                        <div class="font-bold text-on-surface text-sm">Core Engineering Directives:</div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="material-symbols-outlined text-primary text-base mt-0.5">verified</span>
+                            <span><strong>Zero Data Loss:</strong> Medical and hospital audit rules require full treatment history. Deleting old records is strictly forbidden.</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="material-symbols-outlined text-primary text-base mt-0.5">verified</span>
+                            <span><strong>Active Memory Focus:</strong> When a doctor asks a question, the AI only retrieves the single verified truth, not outdated history.</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="material-symbols-outlined text-primary text-base mt-0.5">verified</span>
+                            <span><strong>Tamper-Proof History:</strong> Every time memories are merged, the system logs a permanent history record with a unique security ID.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Step-by-Step Lifecycle Flow (7 cols) -->
+                <div class="lg:col-span-7 bg-surface rounded-3xl p-8 sm:p-10 border border-outline-variant/30 shadow-soft">
+                    <h3 class="text-2xl font-headline font-bold text-on-surface mb-8 pb-4 border-b border-outline-variant/30 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">linear_scale</span>
+                        <span>The 4-Stage Memory Lifecycle</span>
+                    </h3>
+
+                    <div class="relative border-l-2 border-primary/30 ml-4 space-y-10 pl-8">
+                        
+                        <!-- Stage 1 -->
+                        <div class="relative">
+                            <div class="absolute -left-[41px] top-0 w-5 h-5 rounded-full bg-primary ring-4 ring-surface"></div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Stage 01</div>
+                            <h4 class="text-lg font-headline font-bold text-on-surface">User Query &amp; Intention Extraction</h4>
+                            <p class="text-xs font-medium text-tertiary mt-0.5 mb-2">NLP Intent Projection Layer</p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                A physician submits natural language: <em class="text-on-surface">"What is the current asthma regimen for Patient P-001?"</em> The encoder maps query intent into a normalized 384-dimensional query vector.
+                            </p>
+                        </div>
+
+                        <!-- Stage 2 -->
+                        <div class="relative">
+                            <div class="absolute -left-[41px] top-0 w-5 h-5 rounded-full bg-primary ring-4 ring-surface"></div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Stage 02</div>
+                            <h4 class="text-lg font-headline font-bold text-on-surface">Hot-Pool Vector Filtering</h4>
+                            <p class="text-xs font-medium text-tertiary mt-0.5 mb-2">ChromaDB Diachronic Scope</p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                The engine retrieves candidate embeddings filtered strictly by <code class="bg-surface-container px-1 py-0.5 rounded text-xs font-mono">is_archived: false</code>. Any older facts that were previously soft-evicted are bypassed during active retrieval.
+                            </p>
+                        </div>
+
+                        <!-- Stage 3 -->
+                        <div class="relative">
+                            <div class="absolute -left-[41px] top-0 w-5 h-5 rounded-full bg-primary ring-4 ring-surface"></div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Stage 03</div>
+                            <h4 class="text-lg font-headline font-bold text-on-surface">Autonomous Cluster Surgery</h4>
+                            <p class="text-xs font-medium text-tertiary mt-0.5 mb-2">UMAP + HDBSCAN + LLM Healer</p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                In the background, UMAP projections isolate overlapping semantic clusters. When contradictory prescription dates or allergic reactions are detected, the healer synthesizes an authoritative Golden Fact.
+                            </p>
+                        </div>
+
+                        <!-- Stage 4 -->
+                        <div class="relative">
+                            <div class="absolute -left-[41px] top-0 w-5 h-5 rounded-full bg-primary ring-4 ring-surface"></div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-primary mb-1">Stage 04</div>
+                            <h4 class="text-lg font-headline font-bold text-on-surface">Clinical Decision Delivery</h4>
+                            <p class="text-xs font-medium text-tertiary mt-0.5 mb-2">Non-Hallucinatory Agent Response</p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                The agent outputs: <em class="text-on-surface font-semibold">"Patient P-001 is on Flovent. Symbicort was discontinued due to severe heart palpitations."</em> The physician receives 100% verified, actionable medical truth.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Architectural Blueprint: Figure 6 -->
+            <div class="bg-surface rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-soft">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-primary">System Lifecycle Blueprint</span>
+                        <h4 class="text-xl font-headline font-bold text-on-surface">Figure 6: Intent Extraction &amp; Memory Lifecycle</h4>
+                    </div>
+                    <button onclick="openLightbox('assets/images/diagram-6-system-aim.png', 'Fig 6: Detailed Flow & System Aim Blueprint')" class="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline self-start sm:self-auto">
+                        <span class="material-symbols-outlined text-base">zoom_in</span>
+                        <span>Click to Enlarge Blueprint</span>
+                    </button>
+                </div>
+                <div class="rounded-2xl overflow-hidden border border-outline-variant/30 bg-surface-container cursor-pointer group" onclick="openLightbox('assets/images/diagram-6-system-aim.png', 'Fig 6: Detailed Flow & System Aim Blueprint')">
+                    <img src="assets/images/diagram-6-system-aim.png" alt="Figure 6: System Aim and Lifecycle" class="w-full h-80 object-contain group-hover:scale-102 transition-transform duration-300">
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <a href="./architecture.html" class="inline-flex items-center gap-2 text-sm font-semibold text-on-surface hover:text-primary transition">
+                    <span class="material-symbols-outlined text-base">arrow_back</span>
+                    <span>Previous: Architecture</span>
+                </a>
+                <div class="flex items-center gap-4">
+                    <a href="./recovery.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-soft transition">
+                        <span>Next: Recovery &amp; Self-Healing Logic</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-surface-container border-t border-outline-variant/30 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg icon-fill">psychology</span>
+                </div>
+                <span class="font-headline font-bold text-lg text-on-surface">Cogni-Intent</span>
+                <span class="text-xs text-on-surface-variant">v2.0.0 &bull; Built with Terra Organic Design</span>
+            </div>
+            <div class="flex flex-wrap gap-6 text-sm font-medium text-on-surface-variant">
+                <a href="./index.html" class="hover:text-primary transition">Overview</a>
+                <a href="./simulation.html" class="hover:text-primary transition">Live Simulation</a>
+                <a href="./manual.html" class="hover:text-primary transition">User Guide</a>
+                <a href="./architecture.html" class="hover:text-primary transition">Architecture</a>
+                <a href="./workflow.html" class="hover:text-primary transition">Workflow</a>
+                <a href="./recovery.html" class="hover:text-primary transition">Recovery</a>
+                <a href="./lifecycle.html" class="text-primary font-semibold">System Aim</a>
+                <a href="./limitations.html" class="hover:text-primary transition">Limitations</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeLightbox(event)">
+        <div class="relative max-w-6xl w-full max-h-[90vh] bg-surface rounded-2xl overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface-container">
+                <h4 id="lightboxTitle" class="font-headline font-bold text-on-surface text-base">Architectural Diagram</h4>
+                <button onclick="closeLightbox()" class="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            <div class="p-4 overflow-auto flex items-center justify-center bg-black/5 min-h-[50vh]">
+                <img id="lightboxImage" src="" alt="Enlarged Diagram" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-sm">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTimelineStage(dayVal) {
+            const day = parseInt(dayVal);
+            const label = document.getElementById('sliderDayLabel');
+            const card = document.getElementById('timelineStageCard');
+
+            if (day < 20) {
+                label.innerText = `Day ${day}: Phase 1 &bull; Baseline Ingestion`;
+                label.className = "text-primary text-sm font-mono font-bold";
+                card.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary-light text-primary uppercase">Zero Drift Baseline</span>
+                        <h4 class="text-lg font-headline font-bold text-on-surface">Initial Clinical Baseline Entry</h4>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Early agent memories are pristine and isolated. Ingested notes (e.g. Albuterol prescription) occupy distinct vector coordinates with MHS = 1.00.</p>
+                    </div>
+                    <div class="md:col-span-5 bg-surface-container rounded-xl p-4 border border-outline-variant/30 text-xs font-mono space-y-1">
+                        <div class="text-primary font-bold">MHS: 1.00 / 1.00</div>
+                        <div>Active Contradictions: 0</div>
+                        <div>Agent Retrieval State: Safe</div>
+                    </div>
+                `;
+            } else if (day < 70) {
+                label.innerText = `Day ${day}: Phase 2 &bull; Conflicting Notes & Memory Confusion`;
+                label.className = "text-alert text-sm font-mono font-bold";
+                card.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-alert uppercase">Contradiction Warning</span>
+                        <h4 class="text-lg font-headline font-bold text-on-surface">Conflicting Notes in Active Memory</h4>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Medications were changed (Symbicort), side effects occurred (palpitations), and alternatives were prescribed (Flovent). Standard search now retrieves multiple conflicting entries!</p>
+                    </div>
+                    <div class="md:col-span-5 bg-red-50 rounded-xl p-4 border border-red-200 text-xs font-mono space-y-1">
+                        <div class="text-alert font-bold">MHS: 0.42 / 1.00 (ALERT)</div>
+                        <div class="text-alert">Active Contradictions: 1 Cluster</div>
+                        <div class="text-alert font-semibold">Agent State: High Confusion Risk</div>
+                    </div>
+                `;
+            } else {
+                label.innerText = `Day ${day}: Phase 3 &bull; Auto-Healing & Complete History Saved`;
+                label.className = "text-primary text-sm font-mono font-bold";
+                card.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary-light text-primary uppercase">Healed & Safe</span>
+                        <h4 class="text-lg font-headline font-bold text-on-surface">Golden Fact Created &amp; History Linked</h4>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">Cogni-Intent combined the conflicting notes into one verified Golden Fact. Older memories were safely archived to the history chain. Health score is back to 1.00.</p>
+                    </div>
+                    <div class="md:col-span-5 bg-surface-container rounded-xl p-4 border border-primary/30 text-xs font-mono space-y-1">
+                        <div class="text-primary font-bold">MHS: 1.00 / 1.00 (RESTORED)</div>
+                        <div>Active Contradictions: 0 (Healed)</div>
+                        <div class="text-primary font-semibold">Agent State: 100% Ground Truth</div>
+                    </div>
+                `;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTimelineStage(45);
+        });
+
+        function openLightbox(src, title) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightboxTitle').innerText = title || 'Architectural Diagram';
+            document.getElementById('lightboxModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        mobileBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

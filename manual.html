@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cogni-Intent | User Manual & Interactive Guide</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..900;1,7..72,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Tailwind CSS with Terra Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4a7c59",
+                        "primary-hover": "#3b6447",
+                        "primary-container": "#78a886",
+                        "primary-light": "#eef6f0",
+                        surface: "#faf6f0",
+                        "surface-container": "#f0ece4",
+                        "surface-container-low": "#f5f1ea",
+                        "surface-container-high": "#eae6de",
+                        tertiary: "#705c30",
+                        "tertiary-container": "#c4a66a",
+                        "on-surface": "#2e3230",
+                        "on-surface-variant": "#4a4e4a",
+                        "outline-variant": "#c4c8bc",
+                        alert: "#b83230",
+                        "alert-bg": "#fef2f2"
+                    },
+                    fontFamily: {
+                        headline: ["Literata", "Georgia", "serif"],
+                        body: ["Nunito Sans", "system-ui", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    boxShadow: {
+                        soft: "0 4px 20px rgba(46, 50, 48, 0.06)",
+                        elevated: "0 10px 30px rgba(46, 50, 48, 0.09)"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #faf6f0;
+            color: #2e3230;
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Literata', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-header {
+            background: rgba(250, 246, 240, 0.94);
+            backdrop-filter: blur(12px);
+        }
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 9999px;
+            background-color: #4a7c59;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 glass-header border-b border-outline-variant/30 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-2xl icon-fill">psychology</span>
+                </div>
+                <div>
+                    <div class="font-headline font-bold text-xl text-on-surface tracking-tight">Cogni-Intent</div>
+                    <div class="text-[11px] font-semibold text-primary uppercase tracking-wider">Memory Immune Engine</div>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <a href="./index.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">home</span>
+                    <span>Overview</span>
+                </a>
+                <a href="./simulation.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                    <span>Simulation Lab</span>
+                </a>
+                <a href="./manual.html" class="px-3 py-2 rounded-lg text-sm font-semibold bg-surface-container text-primary flex items-center gap-1.5 shadow-xs">
+                    <span class="material-symbols-outlined text-lg icon-fill">help_center</span>
+                    <span>User Guide</span>
+                </a>
+                <a href="./architecture.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">layers</span>
+                    <span>Architecture</span>
+                </a>
+                <a href="./workflow.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">schema</span>
+                    <span>Workflow</span>
+                </a>
+                <a href="./recovery.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">healing</span>
+                    <span>Recovery Logic</span>
+                </a>
+                <a href="./lifecycle.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">timeline</span>
+                    <span>System Aim</span>
+                </a>
+                <a href="./limitations.html" class="px-3 py-2 rounded-lg text-sm font-medium text-on-surface/80 hover:text-primary hover:bg-surface-container transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">warning</span>
+                    <span>Limitations</span>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="./simulation.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white text-sm font-bold px-4 py-2.5 rounded-xl shadow-soft transition-all hover:shadow-elevated hover:-translate-y-0.5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>
+                    <span>Live Simulation</span>
+                    <span class="material-symbols-outlined text-base">rocket_launch</span>
+                </a>
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-on-surface hover:bg-surface-container transition" aria-label="Toggle Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileNav" class="hidden md:hidden border-t border-outline-variant/30 bg-surface px-4 pt-3 pb-6 space-y-1 shadow-elevated">
+            <a href="./index.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Overview</a>
+            <a href="./simulation.html" class="block px-3 py-2.5 rounded-lg text-sm font-bold text-primary hover:bg-primary-light">Launch Live Simulation &rarr;</a>
+            <a href="./manual.html" class="block px-3 py-2.5 rounded-lg text-sm font-semibold bg-surface-container text-primary">User Guide & Manual</a>
+            <a href="./architecture.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Architecture & Model</a>
+            <a href="./workflow.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Workflow Architecture</a>
+            <a href="./recovery.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">Recovery & Healing Logic</a>
+            <a href="./lifecycle.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">System Aim & Lifecycle</a>
+            <a href="./limitations.html" class="block px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface/80 hover:bg-surface-container">System Limitations</a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 py-10 lg:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <!-- Hero Header Banner -->
+            <div class="bg-surface-container rounded-3xl p-6 sm:p-10 border border-outline-variant/30 shadow-soft relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary-light border border-primary/20 text-xs font-bold text-primary tracking-wide uppercase">
+                        <span class="material-symbols-outlined text-sm">auto_stories</span>
+                        <span>User Manual &amp; Interactive Handbook</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-on-surface tracking-tight">
+                        How to Use and Explore Cogni-Intent
+                    </h1>
+                    <p class="text-base sm:text-lg text-on-surface-variant leading-relaxed">
+                        Welcome! This website lets anyone—students, evaluators, medical specialists, and engineers—interactively experience how long-term AI agents develop memory confusion and how our autonomous immune system cures it. Here is everything you need to know in simple, plain English.
+                    </p>
+                    
+                    <!-- Quick Jump Shortcuts -->
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <a href="#quickstart" class="px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-container-high border border-outline-variant/40 text-xs font-bold text-primary transition flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">bolt</span> 60-Second Crash Course
+                        </a>
+                        <a href="#simulation-guide" class="px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-container-high border border-outline-variant/40 text-xs font-bold text-tertiary transition flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">rocket_launch</span> How to Use the Live Lab
+                        </a>
+                        <a href="#pages-guide" class="px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-container-high border border-outline-variant/40 text-xs font-bold text-on-surface transition flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">menu_book</span> Exploring All Pages
+                        </a>
+                        <a href="#faq" class="px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-container-high border border-outline-variant/40 text-xs font-bold text-on-surface-variant transition flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">help</span> Common Questions
+                        </a>
+                    </div>
+                </div>
+
+                <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-9xl text-primary/10 select-none pointer-events-none">menu_book</span>
+            </div>
+
+            <!-- SECTION 1: 60-SECOND CRASH COURSE -->
+            <section id="quickstart" class="space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">Core Understanding</span>
+                    <h2 class="text-2xl sm:text-3xl font-headline font-bold text-on-surface mt-1">What is this project in 60 Seconds?</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-100 text-alert flex items-center justify-center font-bold">1</div>
+                        <h3 class="font-headline font-bold text-lg text-on-surface">The Problem: Cognitive Drift</h3>
+                        <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                            AI agents remember everything forever. When a doctor writes: <em>"Stop Albuterol, start Flovent"</em>, standard search retrieves <strong>both notes</strong> because they both mention asthma. The AI gets confused and gives dangerous advice.
+                        </p>
+                    </div>
+
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-800 flex items-center justify-center font-bold">2</div>
+                        <h3 class="font-headline font-bold text-lg text-on-surface">The Solution: The Auto-Healing Engine</h3>
+                        <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                            Cogni-Intent works like white blood cells for AI memory. It scans the memory database, groups related notes together, spots contradictions, and automatically combines them into a single verified <strong>"Golden Fact"</strong>.
+                        </p>
+                    </div>
+
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold">3</div>
+                        <h3 class="font-headline font-bold text-lg text-on-surface">The Result: Zero Data Loss</h3>
+                        <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                            Old notes are <strong>not deleted</strong> (which would break medical malpractice laws). Instead, they are archived as historical ancestors in a visual lineage graph, while the AI only retrieves the active Golden Fact.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: STEP-BY-STEP SIMULATION GUIDE (THE CORE SHOWCASE) -->
+            <section id="simulation-guide" class="bg-surface-container rounded-3xl p-6 sm:p-10 border border-outline-variant/30 shadow-soft space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline-variant/30">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-tertiary">Hands-On Walkthrough</span>
+                        <h2 class="text-2xl sm:text-3xl font-headline font-bold text-on-surface mt-1">
+                            How to Use the Live Simulation Lab (<a href="./simulation.html" class="text-primary hover:underline">simulation.html</a>)
+                        </h2>
+                    </div>
+                    <a href="./simulation.html" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2 rounded-xl transition self-start sm:self-auto">
+                        <span>Open Lab Now</span>
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                </div>
+
+                <p class="text-sm text-on-surface-variant leading-relaxed">
+                    The Live Simulation Lab is where you can test the system hands-on. Follow these 5 easy steps to see the magic happen:
+                </p>
+
+                <!-- Steps List -->
+                <div class="space-y-6">
+                    
+                    <!-- Step 1 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="step-badge shrink-0">1</div>
+                        <div class="space-y-2 flex-1">
+                            <h3 class="font-headline font-bold text-base sm:text-lg text-on-surface">Pick a Test Scenario</h3>
+                            <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                                At the top of the lab, click one of the 3 pre-configured clinical cards:
+                            </p>
+                            <ul class="text-xs text-on-surface space-y-1 font-medium pl-2">
+                                <li>&bull; <strong class="text-primary">P-001 (Symbicort Contradiction):</strong> Patient was prescribed Symbicort, had heart palpitations, stopped it, and switched to Flovent.</li>
+                                <li>&bull; <strong class="text-tertiary">P-002 (Emergency Contact):</strong> Contact changed from wife (Sarah) to brother (David).</li>
+                                <li>&bull; <strong class="text-alert">P-003 (Allergy Discovery):</strong> Record said "No Known Allergies", but patient later got hives from Amoxicillin.</li>
+                                <li>&bull; <em>Or click <strong>"Custom Playground"</strong> to type your own conflicting statements!</em></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-surface rounded-2xl p-6 border-2 border-primary/40 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="step-badge shrink-0">2</div>
+                        <div class="space-y-2 flex-1">
+                            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-primary-light text-primary uppercase">
+                                The Most Important Step!
+                            </div>
+                            <h3 class="font-headline font-bold text-base sm:text-lg text-on-surface">Click "Query Agent" (Before Healing)</h3>
+                            <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                                Under the <strong>"Ask the AI Agent"</strong> sandbox, click the green <strong>"Query Agent"</strong> button.
+                            </p>
+                            <div class="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-alert font-medium space-y-1">
+                                <div><strong>What You Will See:</strong> An alert appears: <em>"Contradiction / Drift Detected"</em>.</div>
+                                <div>The agent shows you that it retrieved contradictory chunks and warns that answering would cause a medical error. This proves the vulnerability!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="step-badge shrink-0">3</div>
+                        <div class="space-y-2 flex-1">
+                            <h3 class="font-headline font-bold text-base sm:text-lg text-on-surface">Click "Run Auto-Healing (Immune Loop)"</h3>
+                            <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                                On the right panel, click the big button: <strong>"Run Auto-Healing (Immune Loop)"</strong>.
+                            </p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Watch the healing process in real time:
+                            </p>
+                            <ol class="text-xs text-on-surface space-y-1 pl-2 font-medium">
+                                <li>1. <strong>Phase 1:</strong> The 2D plot highlights the conflicting points in <span class="text-alert font-bold">pulsing red</span>. Memory Health Score (MHS) drops to <span class="text-alert font-bold">0.42</span>.</li>
+                                <li>2. <strong>Phase 2:</strong> The auto-healing engine runs and resolves the conflict.</li>
+                                <li>3. <strong>Phase 3:</strong> A glowing <span class="text-tertiary font-bold">Golden Diamond</span> appears on the plot. Older conflicting points turn into grey archived nodes.</li>
+                                <li>4. <strong>Phase 4:</strong> Memory Health Score recovers back to <span class="text-primary font-bold">1.00 (Optimal)</span>!</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-surface rounded-2xl p-6 border-2 border-primary/40 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="step-badge shrink-0">4</div>
+                        <div class="space-y-2 flex-1">
+                            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-primary-light text-primary uppercase">
+                                The Final Triumph!
+                            </div>
+                            <h3 class="font-headline font-bold text-base sm:text-lg text-on-surface">Observe the Agent's Healed Answer</h3>
+                            <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                                Notice the Agent box! It automatically updates to: <strong class="text-primary">"Safe &amp; Healed (Clear Answer)"</strong>.
+                            </p>
+                            <div class="p-3 rounded-xl bg-primary-light border border-primary/30 text-xs text-on-surface space-y-1">
+                                <div><strong>What You Will See:</strong> The AI Agent now outputs the exact ground truth with 100% confidence, referencing only the Golden Fact and citing the past history!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="step-badge shrink-0">5</div>
+                        <div class="space-y-2 flex-1">
+                            <h3 class="font-headline font-bold text-base sm:text-lg text-on-surface">Inspect the Memory History Tree &amp; Live Logs</h3>
+                            <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+                                Scroll down slightly:
+                            </p>
+                            <ul class="text-xs text-on-surface space-y-1 pl-2 font-medium">
+                                <li>&bull; Look at the <strong>Memory History Tree (Lineage Graph)</strong>: See how the Golden Fact links back to the older statements without deleting them.</li>
+                                <li>&bull; Look at the <strong>Live System Logs Console</strong> (the dark box at the bottom right): Read real-time diagnostic logs and memory health scores.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 3: HOW TO EXPLORE THE TECHNICAL PAGES -->
+            <section id="pages-guide" class="space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">Tour of the Website</span>
+                    <h2 class="text-2xl sm:text-3xl font-headline font-bold text-on-surface mt-1">What to Explore on Each Page</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">Every page on this site has interactive widgets designed to teach a specific concept:</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Page Card 1 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">index.html</span>
+                                <span class="material-symbols-outlined text-primary">home</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Overview Page</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Try clicking the <strong>"Story Mode (ELI5)"</strong> vs <strong>"MLOps Technical"</strong> button below the headline to switch between plain English and math! Also click through the <strong>30-Second Explainer</strong> tabs.
+                            </p>
+                        </div>
+                        <a href="./index.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Overview Page</span> &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Page Card 2 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">architecture.html</span>
+                                <span class="material-symbols-outlined text-primary">layers</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Architecture Page</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Click the <strong>4-Layer Interactive Architecture Explorer</strong> (Layer 1: Text Embedding &rarr; Layer 2: Memory Store &rarr; Layer 3: Conflict Scanner &rarr; Layer 4: Auto-Healing) to explore how each layer works.
+                            </p>
+                        </div>
+                        <a href="./architecture.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Architecture Page</span> &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Page Card 3 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">workflow.html</span>
+                                <span class="material-symbols-outlined text-primary">schema</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Workflow Architecture</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Click the <strong>5-Stage Workflow Stepper</strong> to see clear explanations and code for how data flows from memory intake to 2D projection, conflict checking, and safe archiving.
+                            </p>
+                        </div>
+                        <a href="./workflow.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Workflow Page</span> &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Page Card 4 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">recovery.html</span>
+                                <span class="material-symbols-outlined text-primary">healing</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Recovery Logic</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Learn why <strong>permanently deleting past medical data is dangerous and illegal</strong>, and how Cogni-Intent's safe archiving preserves patient history while preventing hallucinations.
+                            </p>
+                        </div>
+                        <a href="./recovery.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Recovery Page</span> &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Page Card 5 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">lifecycle.html</span>
+                                <span class="material-symbols-outlined text-primary">timeline</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Memory Lifecycle</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Drag the <strong>180-Day Interactive Time Slider</strong> to watch an AI agent's memory transition from pristine baseline (Day 1) to contradiction collision (Day 45) to perpetual stability (Day 180).
+                            </p>
+                        </div>
+                        <a href="./lifecycle.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Lifecycle Page</span> &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Page Card 6 -->
+                    <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-soft space-y-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-lg bg-surface-container font-mono text-xs font-bold text-primary">limitations.html</span>
+                                <span class="material-symbols-outlined text-primary">warning</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface mt-2">Limitations &amp; Roadmap</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                An honest engineering review of memory challenges, AI boundary cases, and our 3-phase roadmap from prototype to future enhancements.
+                            </p>
+                        </div>
+                        <a href="./limitations.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-1 pt-2 border-t border-outline-variant/20">
+                            <span>Visit Limitations Page</span> &rarr;
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 4: FREQUENTLY ASKED QUESTIONS -->
+            <section id="faq" class="bg-surface rounded-3xl p-6 sm:p-10 border border-outline-variant/30 shadow-soft space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-tertiary">Quick Answers</span>
+                    <h2 class="text-2xl sm:text-3xl font-headline font-bold text-on-surface mt-1">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm">
+                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 space-y-1.5">
+                        <div class="font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">help</span>
+                            <span>Do I need to install Python, Docker, or ChromaDB to use this website?</span>
+                        </div>
+                        <p class="text-on-surface-variant leading-relaxed pl-6">
+                            <strong>No!</strong> The website is built with a dual-engine architecture. If you simply view it in your browser (or on GitHub Pages), a high-fidelity client-side NLP &amp; MLOps engine runs in the background. If you do run the Python FastAPI backend locally, it seamlessly connects to that as well.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 space-y-1.5">
+                        <div class="font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">help</span>
+                            <span>What does the "Memory Health Score" (MHS) mean?</span>
+                        </div>
+                        <p class="text-on-surface-variant leading-relaxed pl-6">
+                            MHS is a health score from 0.0 to 1.0. A score of 1.0 means every memory in the active pool is consistent and clear. If contradictory statements appear, MHS drops. If it drops below <strong>0.75</strong>, the auto-healing loop immediately steps in to merge conflicts and restore clarity.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 space-y-1.5">
+                        <div class="font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">help</span>
+                            <span>Can I enlarge the system diagrams?</span>
+                        </div>
+                        <p class="text-on-surface-variant leading-relaxed pl-6">
+                            <strong>Yes!</strong> Click on any blueprint or diagram on any page (or click "Enlarge" / "Click to zoom"). A high-resolution lightbox modal will pop up. You can press the <strong>Esc</strong> key or click the close button to exit.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 space-y-1.5">
+                        <div class="font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">help</span>
+                            <span>Can I test my own custom memory statements?</span>
+                        </div>
+                        <p class="text-on-surface-variant leading-relaxed pl-6">
+                            <strong>Yes!</strong> Go to the <a href="./simulation.html" class="text-primary font-semibold hover:underline">Simulation Lab</a>, click <strong>"Custom Playground"</strong>, type in any conflicting facts (e.g. "Fact 1: John lives in Paris", "Fact 2: John moved to Tokyo"), and click <strong>"Inject &amp; Load Into Lab"</strong>!
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom CTA Banner -->
+            <div class="bg-primary text-white rounded-3xl p-8 sm:p-10 shadow-elevated flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <h3 class="text-2xl sm:text-3xl font-headline font-bold">Ready to see it in action?</h3>
+                    <p class="text-primary-light text-xs sm:text-sm max-w-xl">
+                        Launch the interactive Live Simulation Lab to test the doctor chat and watch auto-healing fix memory confusion live.
+                    </p>
+                </div>
+                <a href="./simulation.html" class="inline-flex items-center gap-2 bg-white hover:bg-surface text-primary font-bold text-sm px-6 py-3.5 rounded-xl shadow-soft transition shrink-0">
+                    <span>Launch Live Simulation</span>
+                    <span class="material-symbols-outlined text-base">rocket_launch</span>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-surface-container border-t border-outline-variant/30 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg icon-fill">psychology</span>
+                </div>
+                <span class="font-headline font-bold text-lg text-on-surface">Cogni-Intent</span>
+                <span class="text-xs text-on-surface-variant">v2.0.0 &bull; Built with Terra Organic Design</span>
+            </div>
+            <div class="flex flex-wrap gap-6 text-sm font-medium text-on-surface-variant">
+                <a href="./index.html" class="hover:text-primary transition">Overview</a>
+                <a href="./simulation.html" class="hover:text-primary transition">Live Simulation</a>
+                <a href="./manual.html" class="text-primary font-semibold">User Guide</a>
+                <a href="./architecture.html" class="hover:text-primary transition">Architecture</a>
+                <a href="./workflow.html" class="hover:text-primary transition">Workflow</a>
+                <a href="./recovery.html" class="hover:text-primary transition">Recovery</a>
+                <a href="./lifecycle.html" class="hover:text-primary transition">System Aim</a>
+                <a href="./limitations.html" class="hover:text-primary transition">Limitations</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        mobileBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
